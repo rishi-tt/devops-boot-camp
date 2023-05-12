@@ -25,8 +25,6 @@ pipeline {
 		}
 	}
 
-       }
-
 	stage ('Install sonarqube cli') {
 		steps {
 		   sh 'wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip'
@@ -38,7 +36,12 @@ pipeline {
 		   sh '. /etc/profile.d/sonar-scanner.sh'
 		}
 	}
-
+	stage ('Analyzing Code Quality') {
+		steps {
+	  	  sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=rishi-tt_devops-boot-camp -Dsonar.organization=rishi-tt -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300 -Dsonar.sources=src/main/java/ -Dsonar.java.binaries=target/classes -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=e11f1423dfecd25685b84be7b2553f24f7b9114d'
+		}
+	}
+    }
 
 }
 
